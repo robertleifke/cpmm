@@ -2,9 +2,9 @@
 pragma solidity ^0.8.10;
 
 import "solmate/tokens/ERC20.sol";
-import "./libraries/Math.sol";
-import "./libraries/UQ112x112.sol";
-import "./interfaces/IZuniswapV2Callee.sol";
+import "../libraries/Math.sol";
+import "../libraries/UQ112x112.sol";
+import "../interfaces/ICallee.sol";
 
 interface IERC20 {
     function balanceOf(address) external returns (uint256);
@@ -27,7 +27,7 @@ error InsufficientOutputAmount();
 error InvalidK();
 error TransferFailed();
 
-contract ZuniswapV2Pair is ERC20, Math {
+contract Pair is ERC20, Math {
     using UQ112x112 for uint224;
 
     uint256 constant MINIMUM_LIQUIDITY = 1000;
@@ -59,6 +59,10 @@ contract ZuniswapV2Pair is ERC20, Math {
         address indexed to
     );
 
+    /* ///////////////////////////////////
+            RENTRANCY GUARD
+    /////////////////////////////////// */ 
+
     modifier nonReentrant() {
         require(!isEntered);
         isEntered = true;
@@ -69,10 +73,14 @@ contract ZuniswapV2Pair is ERC20, Math {
     }
 
     /* ///////////////////////////////////
-                    CONSTRUCTOR
+                CONSTRUCTOR
     /////////////////////////////////// */ 
-    
-    constructor() ERC20("ZuniswapV2 Pair", "ZUNIV2", 18) {}
+
+    constructor() ERC20("Pair", "PAIR", 18) {}
+
+    /* ///////////////////////////////////
+                PAIR LOGIC
+    /////////////////////////////////// */ 
 
     function initialize(address token0_, address token1_) public {
         if (token0 != address(0) || token1 != address(0))
@@ -81,10 +89,6 @@ contract ZuniswapV2Pair is ERC20, Math {
         token0 = token0_;
         token1 = token1_;
     }
-
-    /* ///////////////////////////////////
-                PAIR LOGIC
-    /////////////////////////////////// */ 
 
     function mint(address to) public returns (uint256 liquidity) {
         (uint112 reserve0_, uint112 reserve1_, ) = getReserves();
@@ -156,7 +160,7 @@ contract ZuniswapV2Pair is ERC20, Math {
         if (amount0Out > 0) _safeTransfer(token0, to, amount0Out);
         if (amount1Out > 0) _safeTransfer(token1, to, amount1Out);
         if (data.length > 0)
-            IZuniswapV2Callee(to).zuniswapV2Call(
+            ICallee(to).Call(
                 msg.sender,
                 amount0Out,
                 amount1Out,
