@@ -1,4 +1,4 @@
-# Constant product algorithm 
+# Constant product algorithm implementation 
 
 Modified from the zuniswap codebase orginally authored by jeiwan {https://github.com/Jeiwan/zuniswapv2}
 
@@ -10,25 +10,18 @@ On each trade a 30 basis point (bps) fixed fee is charged on the total trade siz
 
 To illustrate the impact of a trade let's say we have a liquidity pool with 500 $token0$ and 2000 $token1$, then $x = 500$ and $y = 2000$. Alice, the trader wants to buy 10 of token0 in terms of token1 at market price.  
 
-\begin{equation}
-    x * y = \delta x * \delta y
-\end{equation}
-\begin{equation}
-    100000 = 59.97 * \delta y
-\end{equation}
-\begin{equation}
-    \delta y = 100000 / 59.97
-\end{equation}
-\begin{equation}
-    \delta y = 1667.5004
-\end{equation}
-\begin{equation}
-    token1 = 2000 - 1667.5004
-\end{equation}
-\begin{equation}
-    token1 = 332.4996
-\end{equation}
-\newline
+$x * y = \Delta x * \Delta y$ 
+
+$100000 = 59.97 * \Delta y$
+
+
+$\Delta y = 100000 / 59.97$
+
+$\Delta y = 1667.5004$
+
+$token1 = 2000 - 1667.5004$
+
+$token1 = 332.4996$
 
 In essence, the price of 1 token0 = $\frac{332.4996}{100}$ which is equal to 3.324996 of token1. After the trade, the fee accrues to the balance of token0 and so the balance of each reserve is 60 $token0$ and 1667.5004 $token1$. 
 
