@@ -31,15 +31,11 @@ To maintain prices equal to external markets, arbitrageurs monitor the pools and
 
 Anyone can create a two pair market on Uniswap. To create one, a user known as a liquidity provider (LP) must provide two tokens in a pool. For this case, Bob adds 50 token0 and 200 token1. In return for providing this liquidity, Bob receives a LP share: a token that represents a pro-rata share of the total liquidity pool. Ownership is transferred to the owner Bob who has claim to the underlying assets plus fees at all times. To calculate the amount of LP shares Bob receives, UniswapV2 takes square root of token0 and token1. 
 
-\begin{equation}
-    LP_{shares} = \sqrt{50*200}
-\end{equation}
-\begin{equation}
-    LP_{shares} = \sqrt{10000}
-\end{equation}
-\begin{equation}
-    LP_{shares} = 100
-\end{equation}
+$LP_{shares} = \sqrt{50*200}$
+
+$LP_{shares} = \sqrt{10000}$
+
+$LP_{shares} = 100$
 
 Now that Bob has 10 LP shares, if Bob decides to remove liquidty, these LP shares get burned by calling function removeLiquidity(). 
  
