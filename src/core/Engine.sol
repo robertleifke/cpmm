@@ -6,11 +6,41 @@ import "../libraries/Math.sol";
 import "../libraries/UQ112x112.sol";
 import "../interfaces/ICallee.sol";
 
-interface IERC20 {
+contract Engine is ERC20 {
+    using Accounts for Accounts.Account;
+    using Pairs for Pairs.Pair;
+    using Pairs for mapping(bytes32 => Pairs.Pair);
+
+
     function balanceOf(address) external returns (uint256);
 
     function transfer(address to, uint256 amount) external;
 }
+
+    /// @notice Types of commands to execute
+    enum Commands {
+        Swap,
+        WrapWETH,
+        UnwrapWETH,
+        AddLiquidity,
+        RemoveLiquidity,
+        BorrowLiquidity,
+        RepayLiquidity,
+        Accrue,
+        CreatePair
+    }
+
+/// @notice Type of command with input to that command
+    struct CommandInput {
+        Commands command;
+        bytes input;
+    }
+
+    /// @notice Type to describe which token in the pair is being referred to
+    enum TokenSelector {
+        Token0,
+        Token1
+    }
 
 
 /* ///////////////////////////////////
