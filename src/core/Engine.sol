@@ -42,6 +42,72 @@ contract Engine is ERC20 {
         Token1
     }
 
+    /// @notice Type to describe what is being exchanged in a swap
+    /// @param Token0 The swap is token 0
+    /// @param Token1 The swap is token 1
+    /// @param Account The swap indexes into the account data
+    enum SwapTokenSelector {
+        Token0,
+        Token1,
+        Account
+    }
+
+    /// @notice Type to describe a liquidity position
+    enum OrderType {
+        BiDirectional 
+    }
+
+    /// @notice Data to pass to a swap action
+    /// @param token0 Token in the 0 position of the pair
+    /// @param token1 Token in the 1 position of the pair
+    /// @param scalingFactor Amount to divide liquidity by to make it fit in a uint128
+    /// @param selector What to swap
+    /// @param amountDesired Amount of the token that `selector` refers to, when `selector` == Account, this indexes
+    /// into the `Accounts` data
+    struct SwapParams {
+        address token0;
+        address token1;
+        uint8 scalingFactor;
+        SwapTokenSelector selector;
+    }
+
+    /// @notice Data to pass to a unwrap weth action
+    struct UnwrapWETHParams {
+        uint256 wethIndex;
+    }
+
+    /// @notice Data to pass to an add liquidity action
+    /// @param token0 Token in the 0 position of the pair
+    /// @param token1 Token in the 1 position of the pair
+    /// @param scalingFactor Amount to divide liquidity by to make it fit in a uint128
+    /// @param strike The strike to provide liquidity to
+    /// @param spread The spread to impose on the liquidity
+    /// @param amountDesired The amount of liquidity to add
+    struct AddLiquidityParams {
+        address token0;
+        address token1;
+        uint8 scalingFactor;
+        int24 strike;
+        uint8 spread;
+        uint128 amountDesired;
+    }
+
+    /// @notice Data to pass to a remove liquidity action
+    /// @param token0 Token in the 0 position of the pair
+    /// @param token1 Token in the 1 position of the pair
+    /// @param scalingFactor Amount to divide liquidity by to make it fit in a uint128
+    /// @param strike The strike to remove liquidity from
+    /// @param spread The spread on the liquidity
+    /// @param amountDesired The amount of balance to remove
+    struct RemoveLiquidityParams {
+        address token0;
+        address token1;
+        uint8 scalingFactor;
+        int24 strike;
+        uint8 spread;
+        uint128 amountDesired;
+    }
+
 
 /* ///////////////////////////////////
                 ERRORS
@@ -74,6 +140,8 @@ contract Pair is ERC20, Math {
 
     bool private isEntered;
 
+
+// there is the client 
     event Burn(
         address indexed sender,
         uint256 amount0,
