@@ -2,15 +2,13 @@
 
 A gas-efficient Constant Function Market Maker (CFMM) implementation using the Constant Product pricing algorithm and a single-contract design pattern.
 
-The **goal** is to enable the decentralized exchange of any two generic ERC-20s on pooled liquidity.
+The **goal** is to enable the decentralized exchange of any two arbitary ERC-20s on pooled liquidity.
 
 ### Pricing Algorithm
 
 A constant function market maker is an autonomous suite of smart contracts deployed on a blockchain that buys or sells a token to keep the reserves of two tokens constant. It does this by using an invariant (math formula) to price a token in terms of another on any pooled liquidity and buying or selling the token *per block* to *arbitraguers* depending on the price.
 
 Uniswap, the most popular CFMM, used for exchanging cryptocurrencies on a blockchain, popularized the *constant product invariant*.
-
-I like yo
 
 #### Calculating a Price
 
